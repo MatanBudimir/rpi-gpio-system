@@ -12,6 +12,7 @@ GPIO.setup(config.channels(), GPIO.OUT, initial=GPIO.HIGH)
 def gpio_switch(gpio_id: int):
     try:
         GPIO.output(gpio_id, not GPIO.input(gpio_id))
+        print(GPIO.input(gpio_id))
         return jsonify({'success': True})
     except Exception as exception:
         return jsonify({'success': False, 'message': exception.__str__()})
