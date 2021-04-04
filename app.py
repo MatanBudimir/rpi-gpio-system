@@ -4,7 +4,7 @@ from config import channels
 
 app = Flask(__name__)
 
-GPIO.set(GPIO.BOARD)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setup(channels(), GPIO.OUT)
 
 
