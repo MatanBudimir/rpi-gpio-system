@@ -43,7 +43,7 @@ def gpio_register():
     return jsonify(config.CHANNELS)
 
 @app.route('/output/delete/<int:gpio_id>', methods=['DELETE'])
-def gpio_register(gpio_id):
+def gpio_delete(gpio_id):
     GPIO.cleanup(gpio_id)
     """data = request.get_json()
 
