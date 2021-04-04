@@ -5,7 +5,7 @@ import config
 app = Flask(__name__)
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(config.channels(), GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(config.channels(), GPIO.OUT, initial=GPIO.HIGH)
 
 
 @app.route('/')
