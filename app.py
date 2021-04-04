@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, jsonify, request
+from flask import Flask, Blueprint, jsonify, request, render_template
 import RPi.GPIO as GPIO
 import config
 
@@ -59,6 +59,10 @@ def gpio_delete(channel: int):
     del config.CHANNELS[channel]
 
     return jsonify(config.CHANNELS)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 try:
     app.register_blueprint(blueprint=api, url_prefix='/api')
