@@ -1,6 +1,10 @@
 def channels() -> list:
-    return [18]
+    return [channel for channel in CHANNELS.keys()]
 
+
+CHANNELS = {
+    18: {'name': 'Light bulb'}
+}
 
 HOST = '0.0.0.0'
 DEBUG = False
