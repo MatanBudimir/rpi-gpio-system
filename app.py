@@ -15,4 +15,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST)
+    app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST, threaded=True)
