@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, jsonify
+from flask import Flask, Blueprint, jsonify, request
 import RPi.GPIO as GPIO
 import config
 
@@ -21,7 +21,7 @@ def gpio_switch(gpio_id: int):
 def gpio_register():
     data = request.get_json()
 
-    return data
+    return jsonify(data)
 
 try:
     app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST, threaded=True)
