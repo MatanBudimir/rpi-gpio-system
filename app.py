@@ -12,10 +12,10 @@ GPIO.setup(config.channels(), GPIO.OUT, initial=GPIO.HIGH)
 def gpio_switch(gpio_id: int):
     try:
         GPIO.output(gpio_id, not GPIO.input(gpio_id))
-        print(GPIO.input(gpio_id))
-        return jsonify({'success': True})
+        return jsonify({'success': True, 'message': 'Turned on.' if not GPIO.input(gpio_id) else 'Turned off.'})
     except Exception as exception:
         return jsonify({'success': False, 'message': exception.__str__()})
+
 
 try:
     app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST, threaded=True)
