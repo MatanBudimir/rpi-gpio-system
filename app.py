@@ -25,14 +25,22 @@ def gpio_register():
         return jsonify({'success': False, 'message': "Make sure all data is present."}), 400
     elif type(data['channel']) is not int:
         return jsonify({'success': False, 'message': "Channel has to be a number."}), 400
-    
+
     name = data['name']
     channel = data['channel']
 
     if channel < 1 or channel > 40:
-        return jsonify({'success': False, 'message': "Channel has to be equal or bigger than 1." if channel < 1 else "Channel has to be equal or lower than 40."}), 400
+        return jsonify({'success': False,
+                        'message': "Channel has to be equal or bigger than 1." if channel < 1 else "Channel has to be equal or lower than 40."}), 400
 
-    return jsonify(data)
+    if channel in config.CHANNELS:
+        return jsonify({'success': False,
+                        'message': "Channel is already active."}), 400
+
+    config.CHANNELS[channel] = {'name': name}
+    GPIO.setup(channel, GPIO.OUT, initial=GPIO.HIGH)
+
+    return jsonify(config.CHANNELS)
 
 try:
     app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST, threaded=True)
