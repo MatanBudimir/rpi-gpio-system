@@ -14,7 +14,9 @@ api = Blueprint('API', __name__)
 def gpio_switch(gpio_id: int):
     try:
         GPIO.output(gpio_id, not GPIO.input(gpio_id))
-        return jsonify({'success': True, 'message': f'{config.CHANNELS[gpio_id]["name"]} was turned on.' if not GPIO.input(gpio_id) else f'{config.CHANNELS[gpio_id]["name"]} was turned off.'})
+        return jsonify({'success': True,
+                        'message': f'{config.CHANNELS[gpio_id]["name"]} was turned on.' if not GPIO.input(
+                            gpio_id) else f'{config.CHANNELS[gpio_id]["name"]} was turned off.'})
     except Exception as exception:
         return jsonify({'success': False, 'message': exception.__str__()})
 
@@ -44,6 +46,7 @@ def gpio_register():
 
     return jsonify(config.CHANNELS)
 
+
 @api.route('/output/delete/<int:channel>', methods=['DELETE'])
 def gpio_delete(channel: int):
     if channel < 1 or channel > 40:
@@ -60,9 +63,11 @@ def gpio_delete(channel: int):
 
     return jsonify(config.CHANNELS)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 try:
     app.register_blueprint(blueprint=api, url_prefix='/api')
