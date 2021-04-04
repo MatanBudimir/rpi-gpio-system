@@ -23,6 +23,8 @@ def gpio_register():
 
     if 'name' not in data or 'channel' not in data:
         return jsonify({'success': False, 'message': "Make sure all data is present."}), 400
+    elif type(data['channel']) is not int:
+        return jsonify({'success': False, 'message': "Channel has to be a number."}), 400
 
     return jsonify(data)
 
