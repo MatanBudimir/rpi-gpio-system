@@ -42,31 +42,21 @@ def gpio_register():
 
     return jsonify(config.CHANNELS)
 
-@app.route('/output/delete/<int:gpio_id>', methods=['DELETE'])
-def gpio_delete(gpio_id):
-    GPIO.cleanup(gpio_id)
-    """data = request.get_json()
-
-    if 'name' not in data or 'channel' not in data:
-        return jsonify({'success': False, 'message': "Make sure all data is present."}), 400
-    elif type(data['channel']) is not int:
-        return jsonify({'success': False, 'message': "Channel has to be a number."}), 400
-
-    name = data['name']
-    channel = data['channel']
-
+@app.route('/output/delete/<int:channel>', methods=['DELETE'])
+def gpio_delete(channel: int):
     if channel < 1 or channel > 40:
         return jsonify({'success': False,
                         'message': "Channel has to be equal or bigger than 1." if channel < 1 else "Channel has to be equal or lower than 40."}), 400
 
-    if channel in config.CHANNELS:
+    if not channel in config.CHANNELS:
         return jsonify({'success': False,
-                        'message': "Channel is already active."}), 400
+                        'message': "Channel is not active."}), 400
 
-    config.CHANNELS[channel] = {'name': name}
-    GPIO.setup(channel, GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.cleanup(channel)
 
-    return jsonify(config.CHANNELS)"""
+    del config.CHANNELS[channel]
+
+    return jsonify(config.CHANNELS)
 
 try:
     app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST, threaded=True)
