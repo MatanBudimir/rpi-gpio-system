@@ -7,8 +7,10 @@ app = Flask(__name__)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(config.channels(), GPIO.OUT, initial=GPIO.HIGH)
 
+api = Blueprint('API', __name__)
 
-@app.route('/output/<int:gpio_id>')
+
+@api.route('/output/<int:gpio_id>')
 def gpio_switch(gpio_id: int):
     try:
         GPIO.output(gpio_id, not GPIO.input(gpio_id))
@@ -17,7 +19,7 @@ def gpio_switch(gpio_id: int):
         return jsonify({'success': False, 'message': exception.__str__()})
 
 
-@app.route('/output/register', methods=['POST'])
+@api.route('/output/register', methods=['POST'])
 def gpio_register():
     data = request.get_json()
 
@@ -42,7 +44,7 @@ def gpio_register():
 
     return jsonify(config.CHANNELS)
 
-@app.route('/output/delete/<int:channel>', methods=['DELETE'])
+@api.route('/output/delete/<int:channel>', methods=['DELETE'])
 def gpio_delete(channel: int):
     if channel < 1 or channel > 40:
         return jsonify({'success': False,
@@ -59,6 +61,7 @@ def gpio_delete(channel: int):
     return jsonify(config.CHANNELS)
 
 try:
+    app.register_blueprint(blueprint=api, url_prefix='/api')
     app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST, threaded=True)
 finally:
     GPIO.cleanup()
