@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, Blueprint
 import RPi.GPIO as GPIO
-from config import channels
+import config
 
 app = Flask(__name__)
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(channels(), GPIO.OUT)
+GPIO.setup(config.channels(), GPIO.OUT)
 
 
 @app.route('/')
@@ -15,4 +15,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=config.DEBUG, port=config.PORT, host=config.HOST)
