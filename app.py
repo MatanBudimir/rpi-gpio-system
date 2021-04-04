@@ -21,6 +21,9 @@ def gpio_switch(gpio_id: int):
 def gpio_register():
     data = request.get_json()
 
+    if not data['channel'] or not data['name']:
+        return jsonify({'success': False, 'message': "Make sure all data is present."}), 400
+
     return jsonify(data)
 
 try:
